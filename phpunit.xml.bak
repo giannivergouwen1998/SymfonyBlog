@@ -1,0 +1,4 @@
+<phpunit
+        colors="true"
+        verbose="false">
+</phpunit>

@@ -1,0 +1,1 @@
+{"version":1,"defects":{"Tests\\UserIdTest::it_can_validate":7},"times":{"Tests\\UserIdTest::it_can_validate":0.009,"Tests\\User\\Domain\\UserIdTest::it_can_validate":0.004}}
