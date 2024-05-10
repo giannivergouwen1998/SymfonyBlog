@@ -1,30 +1,27 @@
 <?php
 
 namespace App\Router;
+use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouteCollection;
 
-use App\Controller\BlogController;
-use Closure;
-use Exception;
-use function var_dump;
-
-class Router
+final readonly class Router
 {
-    protected $routes = [];
-
-    public function addRoute(Method $method, string $url, closure $target)
+    public function __construct(
+        public RouteCollection $routes,
+    )
     {
-        $this->routes[$method->value][$url] = $target;
     }
 
-    public function matchRoute(Request $request): Response
+    public function add(string $name, string $path, RoutingOptions $options, Method $method): void
     {
-        if (isset($this->routes[$request->getMethod()->value])) {
-            foreach ($this->routes[$request->getMethod()->value] as $routeUrl => $target) {
-                if ($routeUrl == $request->getPath()) {
-                    return call_user_func($target, $request);
-                }
-            }
-        }
-        throw new Exception('Route not found');
+        $this->routes->add($name, new Route(
+            $path,
+            defaults: [
+                '_controller' => (string) $options,
+            ],
+            methods: [
+                $method->value
+            ]
+        ));
     }
 }

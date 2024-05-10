@@ -2,6 +2,7 @@
 
 namespace App\Template;
 
+use Symfony\Component\HttpFoundation\Response;
 use function array_filter;
 use function array_map;
 use function array_unique;
@@ -14,15 +15,15 @@ use function str_replace;
 
 final class TemplateEngine
 {
-    public static function render(string $template, array $values): Template
+    public static function render(string $template, array $values): Response
     {
-        $template = file_get_contents("../templates/$template");
+        $template = file_get_contents(__DIR__."/../../templates/$template");
 
         foreach ($values as $key => $value)
         {
             $template = str_replace("{{ $key }}", $value, $template);
         }
 
-        return new Template($template);
+        return new Response($template);
     }
 }

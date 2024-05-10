@@ -4,15 +4,17 @@ namespace App\Router;
 
 enum Method: string
 {
-    case GET = 'GET';
+    case GET = 'get';
 
-    case POST = 'POST';
+    case POST = 'post';
 
-    case PATCH = 'PATCH';
+    case PATCH = 'patch';
 
-    case PUT = 'PUT';
+    case PUT = 'put';
 
-    case DELETE = 'DELETE';
+    case DELETE = 'delete';
 
-    case HEAD = 'HEAD';
+    case HEAD = 'head';
+
+    case OPTION = 'option';
 }
