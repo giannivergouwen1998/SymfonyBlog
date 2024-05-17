@@ -1,1 +1,1 @@
-{"version":1,"defects":[],"times":{"Tests\\User\\Domain\\UserIdTest::it_can_validate":0.004,"Tests\\Unit\\User\\Domain\\UserIdTest::it_can_validate":0.021}}
+{"version":1,"defects":{"App\\AppTest::it_can_return_a_response":8},"times":{"Tests\\User\\Domain\\UserIdTest::it_can_validate":0.004,"Tests\\Unit\\User\\Domain\\UserIdTest::it_can_validate":0.021,"App\\AppTest::it_can_return_a_response":0.021}}
