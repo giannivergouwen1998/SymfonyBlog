@@ -2,99 +2,27 @@
 
 namespace App\Config;
 
-use Closure;
 use Exception;
-use ReflectionClass;
-use ReflectionException;
-use ReflectionNamedType;
-use ReflectionParameter;
-use function dd;
 
 final class DiContainer
 {
-    /** @var array<string, string> $instances*/
-    protected array $instances = [];
+    /** @var array<> */
+    private array $bindings = [];
 
-    public function set(string $abstract, ?string $concrete = null): void
+    public function set(string $id, callable $factory): void
     {
-        if($concrete === null)
-        {
-            $concrete = $abstract;
-        }
-        $this->instances[$abstract] = $concrete;
+        $this->bindings[$id] = $factory;
     }
 
-    /**
-     * @throws ReflectionException
-     */
-    public function get(string $abstract, ReflectionParameter ...$parameter): mixed
+    public function get(string $id)
     {
-        if(!isset($this->instances[$abstract]))
+        if(!isset($this->bindings[$id]))
         {
-            $this->set($abstract);
+            throw new Exception("{$id} does not exist");
         }
 
-        return $this->resolve($this->instances[$abstract], ...$parameter);
-    }
+        $factory = $this->bindings[$id];
 
-    /**
-     * @throws ReflectionException
-     * @throws Exception
-     */
-    public function resolve(mixed $concrete, ReflectionParameter ...$parameters): mixed
-    {
-        if($concrete instanceof Closure)
-        {
-            return $concrete($this, $parameters);
-        }
-        $reflector = new ReflectionClass($concrete);
-
-        if(!$reflector->isInstantiable())
-        {
-            throw new Exception("class {$concrete} is not instantiable");
-        }
-
-        $constructor = $reflector->getConstructor();
-
-        if($constructor === null)
-        {
-            return $reflector->newInstance();
-        }
-
-        $parameters = $constructor->getParameters();
-        $dependencies = $this->getDependencies(...$parameters);
-
-        return $reflector->newInstanceArgs($dependencies);
-
-    }
-
-    /**
-     * @throws ReflectionException
-     */
-    public function getDependencies(ReflectionParameter ...$parameters): mixed
-    {
-        $dependencies = [];
-        foreach ($parameters as $parameter)
-        {
-            $dependency = $parameter->getType();
-
-            if($dependency === null)
-            {
-                if($parameter->isDefaultValueAvailable())
-                {
-                    $dependencies[] = $parameter->getDefaultValue();
-                }
-                else
-                {
-                    throw new Exception("Cant resolve {$parameter->getName()}");
-                }
-            }
-            else
-            {
-                $dependencies[] = $this->get($dependency->getName());
-            }
-        }
-
-        return $dependencies;
+        return $factory($this);
     }
 }
