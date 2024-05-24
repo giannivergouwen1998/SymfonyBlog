@@ -10,5 +10,7 @@ install-composer:
 test:
 	docker compose run --rm php vendor/bin/phpunit tests
 install: install-composer
+phpstan:
+	docker compose run --rm php vendor/bin/phpstan analyse src tests
 
 

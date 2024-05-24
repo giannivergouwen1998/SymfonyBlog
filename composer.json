@@ -18,7 +18,8 @@
     ],
     "require-dev": {
         "phpunit/phpunit": "^10",
-        "symfony/var-dumper": "^7.0"
+        "symfony/var-dumper": "^7.0",
+        "phpstan/phpstan": "^1.11"
     },
     "require": {
         "symfony/routing": "^7.0",
