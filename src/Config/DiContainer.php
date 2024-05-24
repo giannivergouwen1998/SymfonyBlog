@@ -14,7 +14,7 @@ final class DiContainer
         $this->bindings[$id] = $factory;
     }
 
-    public function get(string $id)
+    public function get(string $id): array
     {
         if(!isset($this->bindings[$id]))
         {
