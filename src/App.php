@@ -2,17 +2,10 @@
 
 namespace App;
 
-use App\Controller\PageController;
-use App\Router\Method;
-use App\Router\Router;
-use App\Router\RoutingOptions;
-use App\Template\TemplateEngine;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing;
-use Symfony\Component\Routing\RouteCollection;
-use function dd;
 
 final readonly class App
 {

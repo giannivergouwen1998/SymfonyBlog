@@ -2,27 +2,34 @@
 
 namespace App;
 
-use App\Router\Method;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use function dump;
+use Symfony\Component\Routing\Matcher\UrlMatcher;
+use Symfony\Component\Routing\RequestContext;
 
 final class AppTest extends TestCase
 {
+    public App $app;
+
     protected function setUp(): void
     {
+        $container = require './config/init.php';
+
+        $context = $container->get(RequestContext::class);
+        $matcher = $container->get(UrlMatcher::class);
+
         $request = new Request();
         $request->setMethod('GET');
+
+        $this->app = new App($context, $matcher);
 
     }
 
     #[Test]
     public function it_can_return_a_response(): void {
-        $app = new App();
-        $actual = $app->run();
+
+        $actual = $this->app->run();
 
 
         self::assertSame(<<<HTML
