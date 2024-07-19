@@ -1,54 +1,60 @@
 <?php
 
+declare(strict_types = 1);
+
 use App\App;
 use App\Config\DiContainer;
 use App\Controller\PageController;
 use App\Router\Method;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
-$container = new DiContainer();
+$container = new ContainerBuilder();
 
-$container->set(RouteCollection::class, function (){
-    $routes = new RouteCollection();
-
-    $pageController = PageController::class;
-
-    $routes->add(
+$container->register(
+    RouteCollection::class,
+    RouteCollection::class
+)->addMethodCall(
+    'add',
+    [
         'index',
         new Route(
             '/',
             defaults: [
-                '_controller' => "{$pageController}::viewIndex"
+                '_controller' => PageController::class."::viewIndex"
             ],
             methods: [Method::GET->value]
         )
-    );
+    ]
+);
 
-    return $routes;
-});
+$container->register(
+    RequestContext::class,
+    RequestContext::class
+);
 
-$container->set(RequestContext::class, function () {
-    return new RequestContext();
-});
+$container->register(
+    UrlMatcher::class,
+    UrlMatcher::class
+)->addArgument(
+    new \Symfony\Component\DependencyInjection\Reference(
+        RouteCollection::class
+    )
+)->addArgument(
+    new \Symfony\Component\DependencyInjection\Reference(
+        RequestContext::class
+    )
+);
 
-$container->set(UrlMatcher::class, function (DiContainer $container){
-    $routeCollection = $container->get(RouteCollection::class);
-    $context = $container->get(RequestContext::class);
-
-    return new UrlMatcher($routeCollection, $context);
-});
-
-$container->set(App::class, function (DiContainer $container){
-    $context = $container->get(RequestContext::class);
-    $matcher = $container->get(UrlMatcher::class);
-
-    return new App(
-        $context,
-        $matcher
-    );
-});
+$container->register(
+    App::class
+)->addArgument(
+    new \Symfony\Component\DependencyInjection\Reference(RequestContext::class)
+)->addArgument(
+    new \Symfony\Component\DependencyInjection\Reference(UrlMatcher::class)
+);
 
 return $container;
