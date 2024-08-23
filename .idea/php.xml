@@ -130,6 +130,27 @@
       <path value="$PROJECT_DIR$/vendor/symfony/web-link" />
       <path value="$PROJECT_DIR$/vendor/psr/link" />
       <path value="$PROJECT_DIR$/vendor/beberlei/assert" />
+      <path value="$PROJECT_DIR$/vendor/psr/http-message" />
+      <path value="$PROJECT_DIR$/vendor/psr/http-client" />
+      <path value="$PROJECT_DIR$/vendor/psr/http-factory" />
+      <path value="$PROJECT_DIR$/vendor/psr-discovery/event-dispatcher-implementations" />
+      <path value="$PROJECT_DIR$/vendor/psr-discovery/container-implementations" />
+      <path value="$PROJECT_DIR$/vendor/psr-discovery/cache-implementations" />
+      <path value="$PROJECT_DIR$/vendor/psr-discovery/discovery" />
+      <path value="$PROJECT_DIR$/vendor/psr-discovery/log-implementations" />
+      <path value="$PROJECT_DIR$/vendor/psr-discovery/http-client-implementations" />
+      <path value="$PROJECT_DIR$/vendor/psr-discovery/http-factory-implementations" />
+      <path value="$PROJECT_DIR$/vendor/php-http/discovery" />
+      <path value="$PROJECT_DIR$/vendor/php-http/multipart-stream-builder" />
+      <path value="$PROJECT_DIR$/vendor/auth0/auth0-php" />
+      <path value="$PROJECT_DIR$/vendor/nyholm/psr7" />
+      <path value="$PROJECT_DIR$/vendor/symfony/password-hasher" />
+      <path value="$PROJECT_DIR$/vendor/symfony/security-http" />
+      <path value="$PROJECT_DIR$/vendor/symfony/security-core" />
+      <path value="$PROJECT_DIR$/vendor/symfony/security-csrf" />
+      <path value="$PROJECT_DIR$/vendor/symfony/clock" />
+      <path value="$PROJECT_DIR$/vendor/symfony/security-bundle" />
+      <path value="$PROJECT_DIR$/vendor/psr/clock" />
     </include_path>
   </component>
   <component name="PhpInterpreters">
