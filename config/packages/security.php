@@ -25,6 +25,7 @@ return static function (SecurityConfig $security, ContainerConfigurator $contain
             Auth0Authenticator::class
         ])
         ->logout()
+        ->target('/')
         ->path('/logout')
     ;
 

@@ -24,7 +24,7 @@ final class Auth0Logout implements EventSubscriberInterface
     {
         $event->setResponse(
             new RedirectResponse(
-                $this->auth0->logout('https://google.com')
+                $this->auth0->logout('http://localhost/')
             )
         );
     }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use App\Auth0\Infrastructure\Auth0ConfigFactory;
 use Auth0\SDK\Configuration\SdkConfiguration;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DriverManager;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -28,4 +30,17 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->exclude([
         __DIR__ . '/../src/Kernel.php',
     ]);
+
+    $services
+        ->set(Connection::class)
+        ->factory([DriverManager::class, 'getConnection'])
+        ->args([
+            '$params' => [
+                'dbname' => 'blog',
+                'user' => 'gianni',
+                'password' => '1234',
+                'host' => 'postgres',
+                'driver' => 'pdo_pgsql',
+            ]
+        ]);
 };
