@@ -194,4 +194,6 @@ fabric.properties
 /web/css/
 /web/js/
 
+/docker/postgres/*
+
 # End of https://www.toptal.com/developers/gitignore/api/symfony,phpstorm,php-cs-fixer,phpunit
