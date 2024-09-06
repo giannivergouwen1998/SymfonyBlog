@@ -30,7 +30,6 @@ final class Auth0ConfigFactory
             tokenCache: $cache,
             sessionStorage: $sessionStorage, // 1 week
             cookieSecret: $cookieSecret,
-            cookieDomain: '/',
             cookieExpires: 60 * 60 * 24 * 7,
             cookieSecure: true,
             transientStorage: $transientStorage,

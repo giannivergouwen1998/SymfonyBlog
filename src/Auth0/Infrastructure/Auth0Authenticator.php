@@ -16,6 +16,8 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use function dd;
+use function dump;
 use function json_encode;
 
 final class Auth0Authenticator extends AbstractAuthenticator
@@ -36,14 +38,13 @@ final class Auth0Authenticator extends AbstractAuthenticator
         return $request->attributes->get('_route') === 'auth0_callback';
     }
 
-
     public function authenticate(Request $request): Passport
     {
         try {
             $this->auth0->exchange();
         }catch (Auth0Exception $exception)
         {
-            $this->auth0->clear();
+            throw new AuthenticationException('Authentication failed', previous: $exception);
         }
 
         $userData = $this->auth0->getCredentials();
@@ -56,9 +57,8 @@ final class Auth0Authenticator extends AbstractAuthenticator
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         $path = $this->getTargetPath($request->getSession(), 'main');
-//        TODO figure out path
 
-        return new RedirectResponse('/');
+        return new RedirectResponse($path ?? '/');
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response

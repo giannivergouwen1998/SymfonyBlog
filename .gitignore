@@ -1,6 +1,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/symfony,phpstorm,php-cs-fixer,phpunit
 # Edit at https://www.toptal.com/developers/gitignore?templates=symfony,phpstorm,php-cs-fixer,phpunit
 
+.idea
+
 ### PHP-CS-Fixer ###
 # Covers PHP CS Fixer
 # Reference: https://cs.symfony.com/
@@ -193,5 +195,7 @@ fabric.properties
 ### Symfony Patch ###
 /web/css/
 /web/js/
+
+/docker/postgres/*
 
 # End of https://www.toptal.com/developers/gitignore/api/symfony,phpstorm,php-cs-fixer,phpunit

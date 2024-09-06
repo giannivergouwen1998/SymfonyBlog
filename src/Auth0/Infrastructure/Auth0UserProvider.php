@@ -5,25 +5,18 @@ namespace App\Auth0\Infrastructure;
 use Auth0\SDK\API\Authentication;
 use Auth0\SDK\Auth0;
 use Auth0\SDK\Configuration\SdkConfiguration;
+use DateTimeImmutable;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use function dd;
+use function dump;
 use function json_decode;
+use function setcookie;
 
 /** @implements UserProviderInterface<Auth0User> */
 final class Auth0UserProvider implements UserProviderInterface
 {
-    private Authentication $authentication;
-    private Auth0 $auth0;
-
-    public function __construct(
-        public SdkConfiguration $configuration,
-    )
-    {
-        $this->authentication = new Authentication($this->configuration);
-        $this->auth0 = new Auth0($this->configuration);
-    }
-
     public function refreshUser(UserInterface $user): UserInterface
     {
         if(!$user instanceof Auth0User)
@@ -42,26 +35,12 @@ final class Auth0UserProvider implements UserProviderInterface
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
         $userData = json_decode($identifier, true);
-        $this->auth0->getUser();
-        $response = $this->authentication->clientCredentials();
-
-        $managementTokenResponse = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
-        $this->configuration->setManagementToken($managementTokenResponse->access_token);
-
-//        return new Auth0User(
-//            $userData['user']['sub'],
-//            $userData['user']['email'] ?? null,
-//            ['ROLE_USER'],
-//            $userData['accessToken'] ?? null,
-//            $userData['accessTokenExpired'] ?? null,
-//        );
+        setcookie('idToken', $userData['idToken'], httponly: true);
 
         return new Auth0User(
-            '123',
-            'g@g.nl',
+            $userData['user']['email'],
             ['ROLE_USER'],
-            $managementTokenResponse->access_token,
-            false
+            (new DateTimeImmutable())->setTimestamp($userData['accessTokenExpiration']),
         );
     }
 }
