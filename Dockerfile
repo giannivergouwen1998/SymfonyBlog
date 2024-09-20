@@ -1,4 +1,4 @@
-FROM php:8.2.14-fpm as php
+FROM php:8.3.0-fpm as php
 
 FROM php as composer
 RUN apt-get update && apt-get install -y \

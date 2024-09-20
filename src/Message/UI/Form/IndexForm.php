@@ -15,7 +15,8 @@ final class IndexForm extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Message::class
+            'data_class' => Message::class,
+            'empty_data' => static fn () => new Message(),
         ]);
     }
 

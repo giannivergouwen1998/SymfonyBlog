@@ -10,6 +10,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         'session' => true,
         'csrf_protection' => false,
     ]);
+
     if ($containerConfigurator->env() === 'test') {
         $containerConfigurator->extension('framework', [
             'test' => true,
