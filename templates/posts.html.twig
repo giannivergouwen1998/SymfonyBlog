@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+<button class="btn btn-success"><a style="text-decoration: none;" class="text-dark" href="{{ path('index') }}">Add</a></button>
+<br><br>
+<ul class="list-group">
+    {% for message in messages %}
+        <li class="list-group-item"><a style="text-decoration: none;" class="text-dark" href="{{ path('update_controller', {'messageId': message.messageId}) }}">{{ message.title }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}

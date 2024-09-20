@@ -1,6 +1,6 @@
 <?php
 
-namespace App\User\UI\Controller;
+namespace App\Auth0\UI\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -30,6 +30,6 @@ final class AuthController extends AbstractController
     #[Route(path: '/logout', name: 'auth0_logout')]
     public function logout(Request $request): Response
     {
-        return new RedirectResponse('https://google.com');
+        return new RedirectResponse('http://localhost/');
     }
 }

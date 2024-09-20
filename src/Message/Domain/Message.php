@@ -8,6 +8,7 @@ use function assert;
 final readonly class Message
 {
     private function __construct(
+        public MessageId $messageId,
         public string $title,
         public string $text,
     )
@@ -17,11 +18,25 @@ final readonly class Message
     }
 
     public static function load(
+        MessageId $messageId,
         string $title,
         string $text,
     ): self
     {
         return new self(
+            $messageId,
+            $title,
+            $text,
+        );
+    }
+
+    public static function post(
+        string $title,
+        string $text,
+    ): self
+    {
+        return new self(
+            MessageId::generate(),
             $title,
             $text
         );
