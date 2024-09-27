@@ -7,14 +7,16 @@ use App\Message\Domain\MessageId;
 use App\Message\Domain\MessageNotFound;
 use App\Message\Domain\MessageRepository;
 use Iterator;
+use function array_key_exists;
 
-final readonly class InMemoryMessageRepository implements MessageRepository
+final class InMemoryMessageRepository implements MessageRepository
 {
-    private array $messages;
+    /** @var array<string, Message> $messages*/
+    private array $messages = [];
 
     public function all(): Iterator
     {
-        yield $this->messages;
+        yield from $this->messages;
     }
 
     public function add(Message $message): void
@@ -24,6 +26,26 @@ final readonly class InMemoryMessageRepository implements MessageRepository
 
     public function find(MessageId $messageId): Message
     {
-        return clone $this->messages[$messageId->messageId] ?? throw MessageNotFound::withMessageId($messageId);
+        return $this->messages[$messageId->messageId] ?? throw MessageNotFound::withMessageId($messageId);
+    }
+
+    public function save(Message $message): void
+    {
+        if (!$this->exists($message->messageId))
+        {
+            throw MessageNotFound::withMessageId($message->messageId);
+        }
+
+        $this->messages[$message->messageId->messageId] = $message;
+    }
+
+    private function exists(MessageId $messageId): bool
+    {
+        return array_key_exists($messageId->messageId, $this->messages);
+    }
+
+    public function delete(MessageId $messageId): void
+    {
+        unset($this->messages[$messageId->messageId]);
     }
 }
