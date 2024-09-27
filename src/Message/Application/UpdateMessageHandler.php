@@ -7,7 +7,7 @@ use App\Message\Domain\MessageRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final readonly class PostMessageHandler
+final readonly class UpdateMessageHandler
 {
     public function __construct(
         public MessageRepository $messageRepository,
@@ -15,16 +15,15 @@ final readonly class PostMessageHandler
     {
     }
 
-    public function __invoke(PostMessage $command): void
+    public function __invoke(UpdateMessage $command): void
     {
-        $message = Message::post(
-            $command->title,
-            $command->text
-        );
+        $message = $this->messageRepository->find($command->messageId);
 
-
-        $this->messageRepository->add(
-            $message
+        $this->messageRepository->save(
+            $message->update(
+                $command->title,
+                $command->text,
+            )
         );
     }
 }

@@ -42,8 +42,7 @@ final readonly class DbalMessageRepository implements MessageRepository
             self::TABLE,
             [
                 'id' => $message->messageId->messageId,
-                'title' => $message->title,
-                'text' => $message->text,
+                ...$this->toDatabase($message)
             ]
         );
     }
@@ -63,12 +62,43 @@ final readonly class DbalMessageRepository implements MessageRepository
         return self::fromDatabase($result->fetchAssociative());
     }
 
+    /** @param array<string, mixed> $result */
     private static function fromDatabase(array $result): Message
     {
         return Message::load(
             MessageId::fromString($result['id']),
             $result['title'],
             $result['text'],
+        );
+    }
+
+    public function save(Message $message): void
+    {
+        $this->connection->update(
+            self::TABLE,
+            $this->toDatabase($message),
+            [
+                'id' => $message->messageId->messageId
+            ]
+        );
+    }
+
+    /** @return array<string, mixed> */
+    private function toDatabase(Message $message): array
+    {
+        return [
+            'title' => $message->title,
+            'text' => $message->text,
+        ];
+    }
+
+    public function delete(MessageId $messageId): void
+    {
+        $this->connection->delete(
+            self::TABLE,
+            [
+                'id' => $messageId->messageId
+            ]
         );
     }
 }

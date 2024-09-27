@@ -41,4 +41,21 @@ final readonly class Message
             $text
         );
     }
+
+    public function update(
+        string $title,
+        string $text,
+    ): self
+    {
+        return new self(
+            $this->messageId,
+            $title,
+            $text
+        );
+    }
+
+    public function delete(): self
+    {
+        return $this;
+    }
 }
